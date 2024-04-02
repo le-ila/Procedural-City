@@ -48,7 +48,7 @@ Material:
   - TransparentBackface
   - RayTracingPrepass
   - MOTIONVECTORS
-  m_LockedProperties: 
+  m_LockedProperties: _HeightMapParametrization
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -193,14 +193,14 @@ Material:
     - _EnableFogOnTransparent: 1
     - _EnableGeometricSpecularAA: 0
     - _EnergyConservingSpecularColor: 1
-    - _HeightAmplitude: 0.02
+    - _HeightAmplitude: 0.25259998
     - _HeightCenter: 0.5
     - _HeightMapParametrization: 1
     - _HeightMax: 1.59
     - _HeightMin: 0.06
     - _HeightOffset: 0
     - _HeightPoMAmplitude: 2
-    - _HeightTessAmplitude: 2
+    - _HeightTessAmplitude: 25.26
     - _HeightTessCenter: 0.5
     - _InvTilingScale: 1
     - _Ior: 1.5
@@ -243,8 +243,8 @@ Material:
     - _SubsurfaceMask: 1
     - _SupportDecals: 1
     - _SurfaceType: 0
-    - _TessellationBackFaceCullEpsilon: -0.25
-    - _TessellationFactor: 64
+    - _TessellationBackFaceCullEpsilon: -1
+    - _TessellationFactor: 0
     - _TessellationFactorMaxDistance: 50
     - _TessellationFactorMinDistance: 20
     - _TessellationFactorTriangleSize: 100
