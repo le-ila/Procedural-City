@@ -148,7 +148,7 @@ MonoBehaviour:
     />\n  <presetinput identifier=\"x_Brick_amount\" uid=\"1775922416\" type=\"4\"
     value=\"11\" />\n  <presetinput identifier=\"y__Brick_amount\" uid=\"1775919721\"
     type=\"4\" value=\"18\" />\n  <presetinput identifier=\"height_position\" uid=\"1775917551\"
-    type=\"0\" value=\"0.431\" />\n </sbspreset>\n"
+    type=\"0\" value=\"0.388\" />\n </sbspreset>\n"
   IsRuntimeOnly: 0
   GenerateAllOutputs: 0
   GenerateAllMipmaps: 1
@@ -156,7 +156,7 @@ MonoBehaviour:
   DefaultPreset: " <sbspreset pkgurl=\"pkg://plane_wall_white\" label=\"\" >\n  <presetinput
     identifier=\"$outputsize\" uid=\"178372838\" type=\"8\" value=\"10,10\" />\n
     </sbspreset>\n"
-  MaterialShader: HDRP/Lit
+  MaterialShader: HDRP/LitTessellation
   RenderTextures: 0
   OutputRemaped: 0
   Presets: []
@@ -259,7 +259,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 0
           WidgetType: 1
-        Data: 0.431
+        Data: 0.388
         NumericalDescription:
           DefaultValue: 0.25
           MinValue: 0
