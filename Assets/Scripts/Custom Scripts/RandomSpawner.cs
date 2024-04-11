@@ -5,7 +5,7 @@ using UnityEngine;
 public class RandomSpawner : MonoBehaviour
 {
     [SerializeField]
-    private GameObject prefab;
+    private List<GameObject> leafPrefabs;
 
     [Header("Number of Itemes to spawn per click")]
     [SerializeField]
@@ -43,14 +43,17 @@ public class RandomSpawner : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            if (prefab != null)
+            if (leafPrefabs != null)
             {
                 Vector3 randomPosition = new Vector3(Random.Range(minimumSizeX, maximumSizeX), spawnHeight, Random.Range(minimumSizeZ, maximumSizeZ));
-                for (int i = 0; i <= spawnNumber; i++)
+                Quaternion randomRot = Quaternion.AngleAxis(Random.Range(0, 360),new Vector3(0,1,0));
+                int leafIndex = Random.Range(0, leafPrefabs.Count);
+                for (int i = 0; i < spawnNumber; i++)
                 {
-                    Instantiate(prefab, randomPosition, Quaternion.identity);
+                    GameObject leafObject = Instantiate(leafPrefabs[leafIndex], randomPosition, randomRot);
+                    leafObject.transform.parent = transform.parent;
                 }
-                Debug.Log($"Instanciating object: {prefab}");
+                Debug.Log($"Instanciating object: {leafPrefabs}");
             }
         }
     }
