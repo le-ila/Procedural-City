@@ -151,7 +151,7 @@ MonoBehaviour:
   DefaultPreset: " <sbspreset pkgurl=\"pkg://texture_1_white_brick\" label=\"\" >\n 
     <presetinput identifier=\"$outputsize\" uid=\"719487318\" type=\"8\" value=\"10,10\"
     />\n </sbspreset>\n"
-  MaterialShader: HDRP/Lit
+  MaterialShader: HDRP/LitTessellation
   RenderTextures: 0
   OutputRemaped: 0
   Presets: []

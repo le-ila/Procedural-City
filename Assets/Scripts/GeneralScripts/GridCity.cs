@@ -1,51 +1,138 @@
 ﻿// Version 2023
 //  (Updates: supports different root positions)
+using System.Collections.Generic;
 using UnityEngine;
 
-namespace Demo {
-	public class GridCity : MonoBehaviour {
-		public int rows = 10;
-		public int columns = 10;
-		public int rowWidth = 10;
-		public int columnWidth = 10;
-		public GameObject[] buildingPrefabs;
+namespace Demo
+{
+    public class GridCity : MonoBehaviour
+    {
+        [Header("How many buildings do you want to spawn??")]
+        [SerializeField]
+        private int numberOfBuildings = 50;
+        [SerializeField]
+        private float areaWidth = 100f;
+        [SerializeField]
+        private float areaHeight = 100f;
+        public GameObject[] buildingPrefabs;
+        [SerializeField]
+        private float minimumDistance = 10f;
 
-		public float buildDelaySeconds = 0.1f;
+        [Header("Unique Buildings")]
+        [SerializeField]
+        private GameObject smallPalacePrefab;
+        [SerializeField]
+        private int numberOfSmallPalace;
+        [SerializeField]
+        private GameObject bigPalacePrefab;
+        [SerializeField]
+        private int numberOfBigPalace;
 
-		void Start() {
-			Generate();
-		}
 
-		void Update() {
-			if (Input.GetKeyDown(KeyCode.G)) {
-				DestroyChildren();
-				Generate();
-			}
-		}
+        public float buildDelaySeconds = 0.1f;
 
-		void DestroyChildren() {
-			for (int i = 0; i<transform.childCount; i++) {
-				Destroy(transform.GetChild(i).gameObject);
-			}
-		}
+        private List<Vector3> placedPositions = new List<Vector3>();
 
-		void Generate() {
-			for (int row = 0; row<rows; row++) {
-				for (int col = 0; col<columns; col++) {
-					// Create a new building, chosen randomly from the prefabs:
-					int buildingIndex = Random.Range(0, buildingPrefabs.Length);
-					GameObject newBuilding = Instantiate(buildingPrefabs[buildingIndex], transform);
+        void Start()
+        {
+            Generate();
+        }
 
-					// Place it in the grid:
-					newBuilding.transform.localPosition = new Vector3(col * columnWidth, 0, row*rowWidth);
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                DestroyChildren();
+                Generate();
+            }
+        }
 
-					// If the building has a Shape (grammar) component, launch the grammar:
-					Shape shape = newBuilding.GetComponent<Shape>();
-					if (shape!=null) {
-						shape.Generate(buildDelaySeconds);
-					}
-				}
-			}
-		}
-	}
+        void DestroyChildren()
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                Destroy(transform.GetChild(i).gameObject);
+            }
+        }
+
+        void Generate()
+        {
+            int attempts, maxAttempts = 1000;
+            int placedSmallPalaces = 0, placedBigPalaces = 0;
+
+            int totalBuildings = numberOfBuildings + numberOfSmallPalace + numberOfBigPalace;
+
+            for (int i = 0; i < totalBuildings; i++)
+            {
+                GameObject newBuilding = null;
+                Vector3 potentialPosition;
+                bool positionFound = false;
+                attempts = 0;
+
+                if (placedSmallPalaces < numberOfSmallPalace)
+                {
+                    if (smallPalacePrefab != null)
+                    {
+                        newBuilding = Instantiate(smallPalacePrefab, transform);
+                        placedSmallPalaces++;
+                    }
+                }
+                else if (placedBigPalaces < numberOfBigPalace)
+                {
+                    if (bigPalacePrefab != null)
+                    {
+                        newBuilding = Instantiate(bigPalacePrefab, transform);
+                        placedBigPalaces++;
+                    }
+                }
+                else
+                {
+                    newBuilding = Instantiate(buildingPrefabs[Random.Range(0, buildingPrefabs.Length)], transform);
+                }
+
+                while (!positionFound && attempts < maxAttempts)
+                {
+                    potentialPosition = new Vector3(
+                        Random.Range(-areaWidth / 2f, areaWidth / 2f), 0,
+                        Random.Range(-areaHeight / 2f, areaHeight / 2f));
+
+                    if (IsPositionValid(potentialPosition))
+                    {
+                        newBuilding.transform.localPosition = potentialPosition;
+                        newBuilding.transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+                        placedPositions.Add(potentialPosition);
+                        positionFound = true;
+                    }
+                    attempts++;
+                }
+
+                if (!positionFound)
+                {
+                    Debug.LogWarning("Max placement attempts reached for a building; it may not be placed.");
+                    Destroy(newBuilding);
+                }
+                else
+                {
+                    Shape shape = newBuilding.GetComponent<Shape>();
+                    if (shape != null)
+                    {
+                        shape.Generate(buildDelaySeconds);
+                    }
+                }
+            }
+        }
+
+
+        bool IsPositionValid(Vector3 position)
+        {
+            foreach (Vector3 otherPosition in placedPositions)
+            {
+                if (Vector3.Distance(position, otherPosition) < minimumDistance)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 }

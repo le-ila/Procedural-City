@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SpawnerRandomCreator : EditorWindow
 {
-    [MenuItem("Penis/Random Spawner Tool")]
+    [MenuItem("Tools/Random Spawner Tool")]
     public static void ShowWindow()
     {
         GetWindow<SpawnerRandomCreator>("Generator Creator");
